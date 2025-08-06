@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { useThemeManager, useGlobalDialogs } from "@/hooks";
-import { type MediaItem } from "@/types";
+import type { MediaItem } from "@/types";
 
 enum Action {
   MediRecognition = "media-recognition",
@@ -81,19 +81,23 @@ const handleAction = (action: HeaderAction) => {
     case Action.MediRecognition: // 触发媒体识别事件
       console.log("打开媒体识别对话框");
       openMediaRecognitionDialog({
-        onSuccess(data: MediaItem) {
+        handlers: {
+          onSuccess(data: MediaItem) {
           console.log("媒体识别成功:", data);
-        },
-        onClose() {
-          console.log("媒体识别对话框已关闭");
+          },
+          onClose() {
+            console.log("媒体识别对话框已关闭");
+          },
         },
       });
       break;
     case Action.ViewLogs: // 触发查看日志事件
       console.log("打开日志对话框");
       openLogDialog({
-        onClose() {
-          console.log("日志对话框已关闭");
+        handlers: {
+          onClose() {
+            console.log("日志对话框已关闭");
+          },
         },
       });
       break;

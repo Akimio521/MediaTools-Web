@@ -8,6 +8,12 @@ export enum DialogType {
   LOG = "log", // 日志弹窗
 }
 
+interface OpenDialogParams {
+  type: DialogType;
+  props?: Record<string, any>;
+  handlers?: DialogEventHandlers;
+}
+
 /**
  * 弹窗配置接口
  */
@@ -41,11 +47,8 @@ export function useGlobalDialogs() {
    * @param props 弹窗属性
    * @param handlers 事件处理器
    */
-  const openDialog = (
-    type: DialogType,
-    props?: Record<string, any>,
-    handlers?: DialogEventHandlers
-  ) => {
+  const openDialog = (params: OpenDialogParams) => {
+    const { type, props, handlers } = params;
     globalActiveDialog.value = {
       type,
       visible: true,
@@ -114,11 +117,11 @@ export function useGlobalDialogs() {
     handleDialogClose, // 处理弹窗关闭事件
 
     // 特定弹窗方法
-    openMediaRecognitionDialog() {
-      openDialog(DialogType.MEDIA_RECOGNITION, {}, {});
+    openMediaRecognitionDialog(params?: Partial<OpenDialogParams>) {
+      openDialog({ ...params, type: DialogType.MEDIA_RECOGNITION });
     },
-    openLogDialog() {
-      openDialog(DialogType.LOG, {}, {});
+    openLogDialog(params?: Partial<OpenDialogParams>) {
+      openDialog({ ...params, type: DialogType.LOG });
     },
   };
 }
